@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="{% static 'css/register.css' %}" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <form action="" method="post">
+        {% csrf_token %}
+            <div class="card">
+                {% if error %}
+                    <p>{{ error }}</p>
+                {% endif %}
+                <h3>Sign Up</h3>
+                <div class="inputBox">
+                    <!-- mogłbym tutaj też zajebać required=required -->
+                    <input type="text"  name="username">
+                    <span>Username</span>
+                </div>
+                <div class="inputBox">
+                    <!-- mogłbym tutaj też zajebać required=required -->
+                    <input type="text" name="login">
+                    <span>Login</span>
+                </div>
+                <div class="inputBox">
+                    <!-- mogłbym tutaj też zajebać required=required -->
+                    <input type="password"  name="password">
+                    <span>Password</span>
+                </div>
+                <div class="inputBox">
+                    <!-- mogłbym tutaj też zajebać required=required -->
+                    <input type="text" name="email">
+                    <span>E-mail</span>
+                </div>
+
+                <button type="submit">Enter</button>
+                <a href="{% url 'login' %}">Do you have account?</a>
+            </div>
+        </form>
+
+
+    </div>
+</body>
+</html>
