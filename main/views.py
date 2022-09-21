@@ -6,14 +6,30 @@ import bcrypt
 
 # Create your views here.
 
+"""
+FUNCTION:
+---------
+get -> when user open webs (this is first page when user see)
+post -> when user text any data
 
+VARIABLE:
+---------
+login -> this is user login
+password -> this is user password
+
+ERROR:
+---------
+not login -> when user don't text a login
+not password -> when user don't text a password
+len(login) -> when user text login less than 5 or more than 25 characters
+"""
 class Login(View):
     def get(self, request):
         return render(request, 'login.html')
 
     def post(self, request):
         login = request.POST.get('login')
-        password = request.POST.get('password').encode('utf-8')
+        password = request.POST.get('password')
 
         if not login:
             return render(request, 'login.html', context={'error': "Logi field can't be empty"})
@@ -25,7 +41,7 @@ class Login(View):
         user_login = User.objects.get(login=login)
 
         if user_login.login == login:
-            if bcrypt.checkpw(password, user_login.password.encode('utf-8')):
+            if user_login.password == password:
                 return render(request, 'login.html', context={'error': "This is your password!!"})
 
             return render(request, 'login.html',context={'error': 'Valid password'})
@@ -39,7 +55,7 @@ class Register(View):
     def post(self, request):
         username = request.POST.get('username')
         login = request.POST.get('login')
-        password = request.POST.get('password').encode('utf-8')
+        password = request.POST.get('password')
         email = request.POST.get('email')
 
         if not username or not login or not password or not email:
@@ -63,8 +79,8 @@ class Register(View):
         if user_email:
             return render(request, 'register.html', context={"error": "This e-mail is busy"})
 
-        password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+        #password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
 
-        User.objects.create(username=username, login=login, password=password_hash, email=email)
+        User.objects.create(username=username, login=login, password=password, email=email)
         return redirect('login')
 
